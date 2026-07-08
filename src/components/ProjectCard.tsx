@@ -53,7 +53,7 @@ export default function ProjectCard({ project }: { project: ProjectData }) {
               <p className="text-[8px] text-zinc-300 leading-tight mt-1 line-clamp-2">
                 Increase dietary fiber. Add spinach or oats to balance glucose peaks.
               </p>
-              <span className="text-[6px] text-brand-purple mt-1">Gemini AI Pipeline • Active</span>
+              <span className="text-[6px] text-[var(--brand-color-3)] mt-1">Gemini AI Pipeline • Active</span>
             </div>
 
             {/* Tracking Chart graph */}
@@ -68,13 +68,13 @@ export default function ProjectCard({ project }: { project: ProjectData }) {
                   strokeWidth="2"
                   strokeLinecap="round"
                 />
-                <circle cx="60" cy="8" r="3" className="fill-brand-purple animate-ping" />
-                <circle cx="60" cy="8" r="2" className="fill-brand-purple" />
+                <circle cx="60" cy="8" r="3" className="fill-[var(--brand-color-3)] animate-ping" />
+                <circle cx="60" cy="8" r="2" className="fill-[var(--brand-color-3)]" />
                 
                 <defs>
                   <linearGradient id="blue-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="#2563eb" />
-                    <stop offset="100%" stopColor="#a855f7" />
+                    <stop offset="0%" stopColor="var(--brand-color-2)" />
+                    <stop offset="100%" stopColor="var(--brand-color-3)" />
                   </linearGradient>
                 </defs>
               </svg>
@@ -83,7 +83,7 @@ export default function ProjectCard({ project }: { project: ProjectData }) {
         </div>
       );
     } else {
-      // Sign Language Converter interface mockup
+      // Simulation converter interface mockup
       return (
         <div className="w-full h-full bg-zinc-900 p-4 rounded-t-2xl border-b border-white/5 flex flex-col font-mono text-[10px] text-zinc-400 select-none relative overflow-hidden">
           {/* Simulated Webcam Feed */}
@@ -100,7 +100,7 @@ export default function ProjectCard({ project }: { project: ProjectData }) {
 
             {/* Neural Net Skeletal Hand Drawing */}
             <div className="flex-1 flex items-center justify-center relative my-1">
-              <svg className="w-28 h-20 overflow-visible text-brand-purple" viewBox="0 0 100 80">
+              <svg className="w-28 h-20 overflow-visible text-[var(--brand-color-3)]" viewBox="0 0 100 80">
                 {/* Hand Skeleton Lines */}
                 <path d="M 50,75 L 50,55 L 40,40 L 35,30 L 32,25" fill="none" stroke="currentColor" strokeWidth="1" />
                 <path d="M 50,55 L 48,36 L 45,22 L 44,14" fill="none" stroke="currentColor" strokeWidth="1" />
@@ -109,19 +109,19 @@ export default function ProjectCard({ project }: { project: ProjectData }) {
                 <path d="M 50,55 L 35,62 L 25,60 M 25,60 L 18,52" fill="none" stroke="currentColor" strokeWidth="1" />
                 
                 {/* Joints (dots) */}
-                <circle cx="50" cy="75" r="2.5" className="fill-brand-blue" />
-                <circle cx="50" cy="55" r="2" className="fill-brand-purple" />
-                <circle cx="40" cy="40" r="2" className="fill-brand-purple" />
-                <circle cx="35" cy="30" r="2" className="fill-brand-purple" />
-                <circle cx="32" cy="25" r="2" className="fill-brand-purple" />
+                <circle cx="50" cy="75" r="2.5" className="fill-[var(--brand-color-2)]" />
+                <circle cx="50" cy="55" r="2" className="fill-[var(--brand-color-3)]" />
+                <circle cx="40" cy="40" r="2" className="fill-[var(--brand-color-3)]" />
+                <circle cx="35" cy="30" r="2" className="fill-[var(--brand-color-3)]" />
+                <circle cx="32" cy="25" r="2" className="fill-[var(--brand-color-3)]" />
                 
-                <circle cx="48" cy="36" r="2" className="fill-brand-purple" />
-                <circle cx="45" cy="22" r="2" className="fill-brand-purple" />
-                <circle cx="44" cy="14" r="2" className="fill-brand-purple" />
+                <circle cx="48" cy="36" r="2" className="fill-[var(--brand-color-3)]" />
+                <circle cx="45" cy="22" r="2" className="fill-[var(--brand-color-3)]" />
+                <circle cx="44" cy="14" r="2" className="fill-[var(--brand-color-3)]" />
 
-                <circle cx="56" cy="38" r="2" className="fill-brand-purple" />
-                <circle cx="59" cy="24" r="2" className="fill-brand-purple" />
-                <circle cx="60" cy="16" r="2" className="fill-brand-purple" />
+                <circle cx="56" cy="38" r="2" className="fill-[var(--brand-color-3)]" />
+                <circle cx="59" cy="24" r="2" className="fill-[var(--brand-color-3)]" />
+                <circle cx="60" cy="16" r="2" className="fill-[var(--brand-color-3)]" />
 
                 {/* Bounding box around hand */}
                 <rect x="15" y="10" width="65" height="68" fill="none" stroke="#ef4444" strokeWidth="1.5" strokeDasharray="3,3" />
@@ -135,7 +135,7 @@ export default function ProjectCard({ project }: { project: ProjectData }) {
                 <span className="text-[7px] text-zinc-500 block">Class Output</span>
                 <span className="text-xs font-bold text-white font-mono tracking-widest">HELLO WORLD</span>
               </div>
-              <span className="px-1.5 py-0.5 rounded bg-brand-blue/20 text-brand-blue text-[8px] font-bold">
+              <span className="px-1.5 py-0.5 rounded bg-[var(--brand-color-2)]/20 text-[var(--brand-color-2)] text-[8px] font-bold">
                 Match: 98%
               </span>
             </div>
@@ -164,7 +164,7 @@ export default function ProjectCard({ project }: { project: ProjectData }) {
         <div>
           {/* Card Head */}
           <div className="flex flex-col space-y-1">
-            <span className="text-xs font-mono font-semibold text-brand-indigo dark:text-brand-purple uppercase tracking-wider">
+            <span className="text-xs font-mono font-semibold text-[var(--brand-color-2)] dark:text-[var(--brand-color-3)] uppercase tracking-wider">
               {project.subtitle}
             </span>
             <h3 className="text-xl font-bold font-display text-zinc-900 dark:text-white">
@@ -180,7 +180,7 @@ export default function ProjectCard({ project }: { project: ProjectData }) {
           <ul className="mt-4 space-y-1.5 text-xs text-zinc-500 dark:text-zinc-400">
             {project.features.map((feature, idx) => (
               <li key={idx} className="flex items-center gap-2">
-                <CheckCircle size={12} className="text-brand-indigo dark:text-brand-purple flex-shrink-0" />
+                <CheckCircle size={12} className="text-[var(--brand-color-3)] flex-shrink-0" />
                 <span>{feature}</span>
               </li>
             ))}
@@ -208,7 +208,7 @@ export default function ProjectCard({ project }: { project: ProjectData }) {
                 href={project.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition-colors duration-200"
+                className="flex items-center gap-1.5 text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:text-[var(--brand-color-3)] dark:hover:text-white transition-colors duration-200"
               >
                 <Github size={14} />
                 <span>Source</span>
@@ -220,7 +220,7 @@ export default function ProjectCard({ project }: { project: ProjectData }) {
                 href={project.demoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 text-xs font-semibold text-brand-blue dark:text-brand-cyan hover:underline transition-all duration-200"
+                className="flex items-center gap-1.5 text-xs font-semibold text-[var(--brand-color-2)] dark:text-[var(--brand-color-2)] hover:underline transition-all duration-200"
               >
                 <ExternalLink size={14} />
                 <span>Live Demo</span>

@@ -43,10 +43,10 @@ export default function ContactForm() {
   ];
 
   const socialLinks = [
-    { icon: <Linkedin size={20} />, href: 'https://linkedin.com/in/dinesh--s', color: 'hover:text-brand-blue dark:hover:text-brand-blue border-brand-blue/15' },
-    { icon: <Github size={20} />, href: 'https://github.com/Dinesh2k06', color: 'hover:text-zinc-900 dark:hover:text-white border-zinc-500/15' },
-    { icon: <Code size={20} />, href: 'https://leetcode.com/u/Dinesh__2006/', color: 'hover:text-amber-500 border-amber-500/15' },
-    { icon: <Award size={20} />, href: 'https://www.hackerrank.com/profile/sddinesh190306', color: 'hover:text-emerald-500 border-emerald-500/15' },
+    { icon: <Linkedin size={20} />, href: 'https://linkedin.com/in/dinesh--s', color: 'hover:text-[var(--brand-color-3)] dark:hover:text-[var(--brand-color-3)] hover:border-[var(--brand-color-3)]/30' },
+    { icon: <Github size={20} />, href: 'https://github.com/Dinesh2k06', color: 'hover:text-[var(--brand-color-3)] dark:hover:text-[var(--brand-color-3)] hover:border-[var(--brand-color-3)]/30' },
+    { icon: <Code size={20} />, href: 'https://leetcode.com/u/Dinesh__2006/', color: 'hover:text-[var(--brand-color-3)] dark:hover:text-[var(--brand-color-3)] hover:border-[var(--brand-color-3)]/30' },
+    { icon: <Award size={20} />, href: 'https://www.hackerrank.com/profile/sddinesh190306', color: 'hover:text-[var(--brand-color-3)] dark:hover:text-[var(--brand-color-3)] hover:border-[var(--brand-color-3)]/30' },
   ];
 
   return (
@@ -66,9 +66,9 @@ export default function ContactForm() {
             {contactDetails.map((item, idx) => (
               <div
                 key={idx}
-                className="glass-panel p-4 rounded-xl flex items-center gap-4 border border-black/5 dark:border-white/5"
+                className="glass-panel p-4 rounded-xl flex items-center gap-4"
               >
-                <div className="p-2.5 rounded-lg bg-brand-indigo/10 text-brand-indigo dark:text-brand-purple">
+                <div className="p-2.5 rounded-lg bg-[var(--brand-color-2)]/10 text-[var(--brand-color-2)] dark:text-[var(--brand-color-3)]">
                   {item.icon}
                 </div>
                 <div>
@@ -78,7 +78,7 @@ export default function ContactForm() {
                   {item.href ? (
                     <a
                       href={item.href}
-                      className="text-sm font-semibold text-zinc-800 dark:text-zinc-200 hover:text-brand-indigo dark:hover:text-brand-purple transition-colors"
+                      className="text-sm font-semibold text-zinc-800 dark:text-zinc-200 hover:text-[var(--brand-color-3)] dark:hover:text-[var(--brand-color-3)] transition-colors"
                     >
                       {item.value}
                     </a>
@@ -105,7 +105,7 @@ export default function ContactForm() {
                 href={social.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`p-3 rounded-xl glass-panel border border-black/5 dark:border-white/5 flex items-center justify-center text-zinc-500 transition-all duration-300 hover:scale-105 ${social.color}`}
+                className={`p-3 rounded-xl glass-panel flex items-center justify-center text-zinc-500 transition-all duration-300 hover:scale-105 ${social.color}`}
               >
                 {social.icon}
               </a>
@@ -116,8 +116,8 @@ export default function ContactForm() {
 
       {/* RIGHT: Validation Form */}
       <div className="lg:col-span-7">
-        <div className="glass-panel p-6 sm:p-8 rounded-2xl border border-black/5 dark:border-white/5 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-brand-indigo/5 rounded-full blur-2xl pointer-events-none" />
+        <div className="glass-panel p-6 sm:p-8 rounded-2xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--brand-color-2)]/5 rounded-full blur-2xl pointer-events-none" />
           
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -133,7 +133,7 @@ export default function ContactForm() {
                   value={formData.name}
                   onChange={handleChange}
                   placeholder="John Doe"
-                  className="w-full px-4 py-2.5 rounded-xl text-sm bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 text-zinc-800 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-hidden focus:border-brand-indigo transition-colors"
+                  className="w-full px-4 py-2.5 rounded-xl text-sm bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 text-zinc-800 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-hidden focus:ring-2 focus:ring-[var(--brand-color-2)]/25 focus:border-[var(--brand-color-2)] transition-colors"
                 />
               </div>
               
@@ -149,7 +149,7 @@ export default function ContactForm() {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="john@example.com"
-                  className="w-full px-4 py-2.5 rounded-xl text-sm bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 text-zinc-800 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-hidden focus:border-brand-indigo transition-colors"
+                  className="w-full px-4 py-2.5 rounded-xl text-sm bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 text-zinc-800 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-hidden focus:ring-2 focus:ring-[var(--brand-color-2)]/25 focus:border-[var(--brand-color-2)] transition-colors"
                 />
               </div>
             </div>
@@ -165,7 +165,7 @@ export default function ContactForm() {
                 value={formData.subject}
                 onChange={handleChange}
                 placeholder="Collaboration Opportunity"
-                className="w-full px-4 py-2.5 rounded-xl text-sm bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 text-zinc-800 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-hidden focus:border-brand-indigo transition-colors"
+                className="w-full px-4 py-2.5 rounded-xl text-sm bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 text-zinc-800 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-hidden focus:ring-2 focus:ring-[var(--brand-color-2)]/25 focus:border-[var(--brand-color-2)] transition-colors"
               />
             </div>
 
@@ -181,7 +181,7 @@ export default function ContactForm() {
                 value={formData.message}
                 onChange={handleChange}
                 placeholder="Write your message here..."
-                className="w-full px-4 py-2.5 rounded-xl text-sm bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 text-zinc-800 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-hidden focus:border-brand-indigo transition-colors resize-none"
+                className="w-full px-4 py-2.5 rounded-xl text-sm bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 text-zinc-800 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-hidden focus:ring-2 focus:ring-[var(--brand-color-2)]/25 focus:border-[var(--brand-color-2)] transition-colors resize-none"
               />
             </div>
 
@@ -190,7 +190,7 @@ export default function ContactForm() {
                 type="submit"
                 id="contact-submit-btn"
                 disabled={status === 'sending' || status === 'success'}
-                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-sm text-white bg-linear-to-r from-brand-blue to-brand-indigo hover:shadow-md hover:shadow-brand-indigo/15 hover:scale-[1.01] transition-all disabled:opacity-50 disabled:scale-100 disabled:pointer-events-none cursor-pointer"
+                className="btn-primary w-full disabled:opacity-50 disabled:scale-100 disabled:pointer-events-none"
               >
                 {status === 'sending' ? (
                   <span>Sending message...</span>

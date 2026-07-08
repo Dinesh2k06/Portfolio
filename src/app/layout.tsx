@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
 
 export const metadata: Metadata = {
   title: "Dinesh S | AI & Generative AI Engineer Portfolio",
@@ -33,7 +39,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full scroll-smooth" suppressHydrationWarning>
+    <html lang="en" className={`${inter.variable} h-full scroll-smooth`} suppressHydrationWarning>
       <head>
         {/* Anti-flash theme script */}
         <script
@@ -50,7 +56,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-full flex flex-col font-sans bg-background text-foreground antialiased selection:bg-brand-indigo/30 selection:text-brand-indigo">
+      <body className="min-h-full flex flex-col font-sans bg-background text-foreground antialiased selection:bg-rose-500/20 selection:text-[#F43F5E]">
         <ThemeProvider>
           {children}
         </ThemeProvider>

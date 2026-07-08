@@ -72,10 +72,10 @@ export default function Header() {
             onClick={(e) => handleNavClick(e, '#')}
             className="flex items-center gap-2 font-display font-bold text-xl tracking-tight text-zinc-900 dark:text-white"
           >
-            <div className="p-1.5 rounded-lg bg-linear-to-tr from-brand-blue to-brand-purple text-white">
+            <div className="p-1.5 rounded-lg bg-[var(--brand-color-2)] text-white">
               <Terminal size={18} />
             </div>
-            <span>Dinesh<span className="text-brand-indigo">.</span></span>
+            <span>Dinesh<span className="text-[var(--brand-color-3)]">.</span></span>
           </a>
 
           {/* Desktop Navigation */}
@@ -85,7 +85,7 @@ export default function Header() {
                 key={item.href}
                 href={item.href}
                 onClick={(e) => handleNavClick(e, item.href)}
-                className="text-sm font-medium text-zinc-600 dark:text-zinc-300 hover:text-brand-indigo dark:hover:text-brand-purple transition-colors duration-200"
+                className="text-sm font-medium text-zinc-600 dark:text-zinc-300 hover:text-[var(--brand-color-3)] dark:hover:text-[var(--brand-color-3)] transition-colors duration-200"
               >
                 {item.label}
               </a>
@@ -106,7 +106,7 @@ export default function Header() {
             <a
               href="/assets/dinesh_resume.pdf"
               download="Dinesh_S_Resume.pdf"
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold bg-zinc-900 text-white dark:bg-white dark:text-black hover:bg-brand-indigo dark:hover:bg-brand-indigo hover:text-white transition-all duration-300 shadow-sm shadow-black/5"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold bg-[var(--brand-color-2)] text-white hover:bg-[#F43F5E] transition-all duration-300 shadow-sm"
             >
               <span>Resume</span>
               <ArrowUpRight size={14} />
@@ -151,7 +151,7 @@ export default function Header() {
                     key={item.href}
                     href={item.href}
                     onClick={(e) => handleNavClick(e, item.href)}
-                    className="text-base font-semibold text-zinc-700 dark:text-zinc-300 hover:text-brand-indigo dark:hover:text-brand-purple transition-colors duration-200"
+                    className="text-base font-semibold text-zinc-700 dark:text-zinc-300 hover:text-[var(--brand-color-3)] dark:hover:text-[var(--brand-color-3)] transition-colors duration-200"
                   >
                     {item.label}
                   </a>
@@ -160,7 +160,7 @@ export default function Header() {
                 <a
                   href="/assets/dinesh_resume.pdf"
                   download="Dinesh_S_Resume.pdf"
-                  className="flex items-center justify-center gap-1.5 w-full py-3 rounded-xl text-sm font-semibold bg-zinc-900 text-white dark:bg-white dark:text-black hover:bg-brand-indigo hover:text-white transition-all duration-300 shadow-sm"
+                  className="flex items-center justify-center gap-1.5 w-full py-3 rounded-xl text-sm font-semibold bg-[var(--brand-color-2)] text-white hover:bg-[#F43F5E] transition-all duration-300 shadow-sm"
                 >
                   <span>Download Resume</span>
                   <ArrowUpRight size={14} />

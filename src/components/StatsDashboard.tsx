@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { Code, Star, GitFork, BookOpen, AlertCircle, RefreshCw, Trophy } from 'lucide-react';
 import { Github } from '@/components/Icons';
 
@@ -98,7 +99,7 @@ const FALLBACK_LEETCODE: LeetcodeStats = {
   ranking: 312000,
 };
 
-const CACHE_DURATION = 1000 * 60 * 60 * 2; // 2 hours
+const CACHE_DURATION = 1000 * 60 * 5; // 5 minutes (reduced from 2 hours)
 
 export default function StatsDashboard() {
   const [githubProfile, setGithubProfile] = useState<GithubProfile | null>(null);
@@ -106,10 +107,12 @@ export default function StatsDashboard() {
   const [leetcode, setLeetcode] = useState<LeetcodeStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [isDemoMode, setIsDemoMode] = useState(false);
+  const [leetcodeError, setLeetcodeError] = useState<string | null>(null);
 
   const fetchStats = async (forceRefresh = false) => {
     setLoading(true);
     setIsDemoMode(false);
+    setLeetcodeError(null);
     
     const cachedTime = localStorage.getItem('stats_cache_time');
     const hasCache = cachedTime && (Date.now() - parseInt(cachedTime)) < CACHE_DURATION;
@@ -139,6 +142,10 @@ export default function StatsDashboard() {
       
       let leetcodeStats = data.leetcode;
 
+      if (data.leetcodeError) {
+        setLeetcodeError(data.leetcodeError);
+      }
+
       // Client-side fallback if server-side LeetCode fetching was blocked by Cloudflare on Vercel
       if (!leetcodeStats) {
         try {
@@ -152,12 +159,14 @@ export default function StatsDashboard() {
                 mediumSolved: lcData.mediumSolved,
                 hardSolved: lcData.hardSolved,
                 totalQuestions: lcData.totalQuestions || 3300,
-                easyQuestions: lcData.totalQuestions || 820,
-                mediumQuestions: lcData.totalQuestions || 1720,
-                hardQuestions: lcData.totalQuestions || 760,
+                easyQuestions: lcData.easyQuestions || 820,
+                mediumQuestions: lcData.mediumQuestions || 1720,
+                hardQuestions: lcData.hardQuestions || 760,
                 acceptanceRate: lcData.acceptanceRate,
                 ranking: lcData.ranking,
               };
+              // Clear error if backup succeeded
+              setLeetcodeError(null);
             }
           }
         } catch (clientLcErr) {
@@ -166,7 +175,7 @@ export default function StatsDashboard() {
       }
 
       if (!leetcodeStats) {
-        leetcodeStats = FALLBACK_LEETCODE;
+        throw new Error(data.leetcodeError || 'LeetCode API failed on both GraphQL and backup endpoints.');
       }
 
       // Save to cache
@@ -180,13 +189,15 @@ export default function StatsDashboard() {
       setLeetcode(leetcodeStats);
       setIsDemoMode(!data.githubProfile || leetcodeStats === FALLBACK_LEETCODE);
     } catch (error) {
-      console.warn('Network stats fetch failed. Loading high-fidelity static fallbacks.', error);
+      console.warn('Network stats fetch failed. Displaying connection warnings.', error);
       setIsDemoMode(true);
+      const errorMsg = error instanceof Error ? error.message : String(error);
+      setLeetcodeError(errorMsg);
       
-      // Load fallback data
+      // Load fallback data for GitHub, but set LeetCode to null to trigger the "Unable to fetch" UI
       setGithubProfile(FALLBACK_GITHUB_PROFILE);
       setGithubRepos(FALLBACK_GITHUB_REPOS);
-      setLeetcode(FALLBACK_LEETCODE);
+      setLeetcode(null);
     } finally {
       setLoading(false);
     }
@@ -234,9 +245,9 @@ export default function StatsDashboard() {
       {/* Dashboard Toolbar */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+          <span className={`w-2 h-2 rounded-full ${leetcodeError ? 'bg-[#F43F5E] animate-pulse' : (isDemoMode ? 'bg-amber-500' : 'bg-emerald-600 animate-ping')}`} />
           <span className="text-xs font-mono font-medium text-zinc-500 dark:text-zinc-400">
-            {isDemoMode ? 'Displaying local cache' : 'Live Connected Integration'}
+            {leetcodeError ? 'LeetCode Sync Failed (Unreachable)' : (isDemoMode ? 'Displaying local cache' : 'Live Connected Integration')}
           </span>
         </div>
         
@@ -257,10 +268,11 @@ export default function StatsDashboard() {
           {githubProfile && (
             <div className="glass-panel p-6 rounded-2xl flex flex-col sm:flex-row items-center gap-5 relative overflow-hidden group">
               <div className="absolute inset-0 bg-gradient-to-tr from-brand-blue/5 to-transparent pointer-events-none" />
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src={githubProfile.avatarUrl}
                 alt={githubProfile.name}
+                width={64}
+                height={64}
                 className="w-16 h-16 rounded-full border-2 border-brand-indigo/30 shadow-md group-hover:scale-105 transition-transform duration-300"
               />
               <div className="text-center sm:text-left flex-1 space-y-1">
@@ -338,7 +350,7 @@ export default function StatsDashboard() {
 
         {/* RIGHT SIDE: LeetCode Panel */}
         <div className="lg:col-span-5 flex flex-col justify-between">
-          {leetcode && (
+          {leetcode ? (
             <div className="glass-panel p-6 rounded-2xl flex flex-col h-full justify-between relative overflow-hidden group">
               <div className="absolute inset-0 bg-gradient-to-br from-brand-purple/5 to-transparent pointer-events-none" />
               
@@ -459,6 +471,39 @@ export default function StatsDashboard() {
                       {leetcode.ranking.toLocaleString()}
                     </span>
                   </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="glass-panel p-6 rounded-2xl flex flex-col h-full justify-between relative overflow-hidden group">
+              <div className="absolute inset-0 bg-gradient-to-br from-brand-purple/5 to-transparent pointer-events-none" />
+              
+              <div className="space-y-4">
+                <div className="flex items-center justify-between border-b border-black/5 dark:border-white/5 pb-3">
+                  <div className="flex items-center gap-2">
+                    <Code className="text-[#F43F5E]" size={18} />
+                    <h4 className="font-bold font-display text-zinc-900 dark:text-white">
+                      LeetCode Metrics
+                    </h4>
+                  </div>
+                  <a
+                    href="https://leetcode.com/u/Dinesh__2006/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs font-mono text-[#F43F5E] hover:underline"
+                  >
+                    @Dinesh__2006
+                  </a>
+                </div>
+
+                <div className="flex flex-col items-center justify-center py-12 text-center space-y-3">
+                  <AlertCircle className="text-[#F43F5E] w-10 h-10 animate-pulse" />
+                  <span className="text-xs font-semibold text-zinc-800 dark:text-zinc-200">
+                    Unable to fetch latest LeetCode stats.
+                  </span>
+                  <p className="text-[10px] text-zinc-500 max-w-[280px]">
+                    We couldn&apos;t connect to LeetCode&apos;s endpoint. Please click &ldquo;Sync Profiles&rdquo; to retry.
+                  </p>
                 </div>
               </div>
             </div>

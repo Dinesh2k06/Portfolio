@@ -91,7 +91,7 @@ export default function Home() {
         <Hero />
 
         {/* ABOUT ME */}
-        <section id="about" className="py-20 border-t border-black/5 dark:border-white/5 relative bg-zinc-50/50 dark:bg-[#050505]/40">
+        <section id="about" className="py-28 border-t border-black/5 dark:border-white/5 relative bg-zinc-50/50 dark:bg-[#050505]/40">
           <div className="max-w-7xl mx-auto px-6">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
               
@@ -124,7 +124,7 @@ export default function Home() {
         </section>
 
         {/* EDUCATION & EXPERIENCE */}
-        <section id="experience" className="py-20 border-t border-black/5 dark:border-white/5">
+        <section id="experience" className="py-28 border-t border-black/5 dark:border-white/5">
           <div className="max-w-7xl mx-auto px-6">
             
             {/* Section Title */}
@@ -239,7 +239,7 @@ export default function Home() {
         </section>
 
         {/* SKILLS */}
-        <section id="skills" className="py-20 border-t border-black/5 dark:border-white/5 bg-zinc-50/50 dark:bg-[#050505]/40">
+        <section id="skills" className="py-28 border-t border-black/5 dark:border-white/5 bg-zinc-50/50 dark:bg-[#050505]/40">
           <div className="max-w-7xl mx-auto px-6">
             
             {/* Title */}
@@ -366,7 +366,7 @@ export default function Home() {
         </section>
 
         {/* PROJECTS */}
-        <section id="projects" className="py-20 border-t border-black/5 dark:border-white/5">
+        <section id="projects" className="py-28 border-t border-black/5 dark:border-white/5">
           <div className="max-w-7xl mx-auto px-6">
             
             {/* Title */}
@@ -393,7 +393,7 @@ export default function Home() {
         </section>
 
         {/* DASHBOARD INTEGRATIONS */}
-        <section id="stats" className="py-20 border-t border-black/5 dark:border-white/5 bg-zinc-50/50 dark:bg-[#050505]/40">
+        <section id="stats" className="py-28 border-t border-black/5 dark:border-white/5 bg-zinc-50/50 dark:bg-[#050505]/40">
           <div className="max-w-7xl mx-auto px-6">
             
             {/* Title */}
@@ -415,7 +415,7 @@ export default function Home() {
         </section>
 
         {/* CERTIFICATIONS & ACHIEVEMENTS */}
-        <section id="credentials" className="py-20 border-t border-black/5 dark:border-white/5">
+        <section id="credentials" className="py-28 border-t border-black/5 dark:border-white/5">
           <div className="max-w-7xl mx-auto px-6">
             
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
@@ -546,7 +546,7 @@ export default function Home() {
         </section>
 
         {/* CONTACT */}
-        <section id="contact" className="py-20 border-t border-black/5 dark:border-white/5 bg-zinc-50/50 dark:bg-[#050505]/40">
+        <section id="contact" className="py-28 border-t border-black/5 dark:border-white/5 bg-zinc-50/50 dark:bg-[#050505]/40">
           <div className="max-w-7xl mx-auto px-6">
             
             {/* Title */}
@@ -591,7 +591,7 @@ export default function Home() {
             onClick={scrollToTop}
             id="back-to-top-btn"
             aria-label="Back to Top"
-            className="fixed bottom-6 right-6 z-40 p-3 rounded-xl bg-zinc-900 text-white dark:bg-white dark:text-black hover:bg-brand-indigo dark:hover:bg-brand-indigo hover:text-white transition-all shadow-md cursor-pointer border border-black/5 dark:border-white/5"
+            className="fixed bottom-6 right-6 z-40 p-3 rounded-xl bg-zinc-900 text-white dark:bg-white dark:text-black hover:bg-[#F43F5E] dark:hover:bg-[#F43F5E] hover:text-white dark:hover:text-white transition-all shadow-md cursor-pointer border border-black/5 dark:border-white/5"
           >
             <ChevronUp size={16} />
           </motion.button>

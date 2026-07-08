@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowDown, Code, Sparkles, FileDown, Send } from 'lucide-react';
 import { Github, Linkedin } from '@/components/Icons';
@@ -52,9 +53,8 @@ export default function Hero() {
 
   return (
     <section id="hero" className="relative min-h-[90vh] flex flex-col justify-center overflow-hidden py-16 bg-grid-pattern">
-      {/* Background Radial Glow Effects */}
-      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[300px] md:w-[600px] h-[300px] md:h-[600px] rounded-full bg-brand-indigo/15 dark:bg-brand-indigo/10 blur-[80px] md:blur-[120px] pointer-events-none animate-pulse-slow" />
-      <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-[250px] md:w-[500px] h-[250px] md:h-[500px] rounded-full bg-brand-purple/15 dark:bg-brand-purple/10 blur-[80px] md:blur-[120px] pointer-events-none animate-pulse-slow" />
+      {/* Background visual - very subtle elegant soft shadows, no neon glows */}
+      <div className="absolute inset-0 bg-radial-to-b from-transparent via-transparent to-[#FFF6F7]/20 dark:to-black/30 pointer-events-none" />
 
       {/* Hero content */}
       <div className="relative max-w-7xl mx-auto px-6 w-full flex flex-col md:grid md:grid-cols-12 items-center gap-12 z-10">
@@ -65,9 +65,9 @@ export default function Hero() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold tracking-wide bg-brand-indigo/10 text-brand-indigo dark:text-zinc-300 border border-brand-indigo/25 self-start"
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold tracking-wide bg-brand-indigo/5 text-brand-indigo dark:text-zinc-300 border border-brand-indigo/15 self-start"
           >
-            <Sparkles size={12} className="animate-spin-slow" />
+            <Sparkles size={12} className="text-[var(--brand-color-3)]" />
             <span>Currently Preparing for Internships</span>
           </motion.div>
 
@@ -77,7 +77,7 @@ export default function Hero() {
             transition={{ duration: 0.5, delay: 0.15 }}
           >
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-display font-extrabold tracking-tight leading-none text-zinc-950 dark:text-white">
-              Hi, I&apos;m <span className="bg-clip-text text-transparent bg-gradient-to-r from-brand-blue via-brand-indigo to-brand-purple">Dinesh</span> 👋
+              Hi, I&apos;m <span className="bg-clip-text text-transparent bg-gradient-to-r from-brand-blue to-brand-purple">Dinesh</span> 👋
             </h1>
             <h2 className="mt-3 text-xl sm:text-2xl font-semibold text-zinc-800 dark:text-zinc-200 min-h-[36px]">
               <span className="text-brand-purple font-mono font-bold">&gt;&nbsp;</span>
@@ -108,21 +108,21 @@ export default function Hero() {
           >
             <button
               onClick={() => handleScrollTo('#projects')}
-              className="px-6 py-3 rounded-xl text-sm font-semibold bg-linear-to-r from-brand-blue to-brand-indigo text-white hover:shadow-lg hover:shadow-brand-indigo/25 hover:scale-[1.02] transition-all duration-300 cursor-pointer"
+              className="btn-primary"
             >
               View Projects
             </button>
             <a
               href="/assets/dinesh_resume.pdf"
               download="Dinesh_S_Resume.pdf"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold bg-zinc-100 text-zinc-800 dark:bg-white/5 dark:text-zinc-200 border border-black/5 dark:border-white/5 hover:bg-black/10 dark:hover:bg-white/10 transition-all duration-300 hover:scale-[1.02]"
+              className="btn-secondary"
             >
               <FileDown size={16} />
               <span>Download Resume</span>
             </a>
             <button
               onClick={() => handleScrollTo('#contact')}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold bg-transparent text-zinc-700 dark:text-zinc-300 hover:text-brand-indigo dark:hover:text-white transition-all duration-300 cursor-pointer"
+              className="btn-secondary"
             >
               <Send size={16} />
               <span>Contact Me</span>
@@ -156,7 +156,7 @@ export default function Hero() {
               href="https://leetcode.com/u/Dinesh__2006/"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-amber-500 transition-colors duration-200"
+              className="hover:text-brand-purple transition-colors duration-200"
             >
               <Code size={20} />
             </a>
@@ -172,31 +172,30 @@ export default function Hero() {
         >
           <div className="relative group w-64 h-64 md:w-80 md:h-80">
             {/* Floating Sparkles (Top Right) */}
-            <div className="absolute -top-4 -right-4 w-12 h-12 md:w-16 md:h-16 rounded-2xl glass-panel flex items-center justify-center border border-white/10 dark:border-white/5 shadow-2xl pointer-events-none animate-float-slow z-20">
-              <Sparkles className="w-5 h-5 md:w-7 md:h-7 text-brand-indigo" />
+            <div className="absolute -top-4 -right-4 w-12 h-12 md:w-16 md:h-16 rounded-2xl glass-panel flex items-center justify-center shadow-2xl pointer-events-none animate-float-slow z-20">
+              <Sparkles className="w-5 h-5 md:w-7 md:h-7 text-brand-purple" />
             </div>
             
             {/* Floating Code (Bottom Left) */}
-            <div className="absolute -bottom-4 -left-4 w-10 h-10 md:w-14 md:h-14 rounded-full glass-panel flex items-center justify-center border border-white/10 dark:border-white/5 shadow-2xl pointer-events-none animate-float-medium z-20">
+            <div className="absolute -bottom-4 -left-4 w-10 h-10 md:w-14 md:h-14 rounded-full glass-panel flex items-center justify-center shadow-2xl pointer-events-none animate-float-medium z-20">
               <Code className="w-4 h-4 md:w-6 md:h-6 text-brand-blue" />
             </div>
 
-            {/* Pulsing Back Glow */}
-            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-brand-blue via-brand-indigo to-brand-purple blur-md opacity-40 group-hover:opacity-60 transition-opacity duration-500 animate-pulse-slow" />
-            
             {/* Double Frame Effect */}
-            <div className="absolute inset-2 rounded-full border border-white/10 dark:border-white/5 bg-[#0a0a0a]/50 backdrop-blur-sm z-0" />
+            <div className="absolute inset-2 rounded-full border border-black/5 dark:border-white/5 bg-[#0a0a0a]/5 backdrop-blur-sm z-0" />
             
             {/* Profile Image Shell */}
-            <div className="relative w-full h-full rounded-full border-2 border-brand-indigo/30 p-2 overflow-hidden flex items-center justify-center z-10 glass-panel">
-              <div className="w-full h-full rounded-full overflow-hidden relative bg-gradient-to-br from-zinc-800 to-zinc-950 flex items-center justify-center">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+            <div className="relative w-full h-full rounded-full border border-black/10 dark:border-white/10 p-2 overflow-hidden flex items-center justify-center z-10 glass-panel">
+              <div className="w-full h-full rounded-full overflow-hidden relative bg-gradient-to-br from-zinc-100 to-zinc-200 dark:from-zinc-800 dark:to-zinc-950 flex items-center justify-center">
+                <Image
                   src="/assets/dinesh_profile.jpg"
                   alt="Dinesh S Profile"
+                  width={320}
+                  height={320}
+                  priority
                   className="w-full h-full object-cover object-top scale-105 group-hover:scale-110 transition-transform duration-500"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-brand-indigo/10 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-brand-indigo/5 via-transparent to-transparent pointer-events-none" />
               </div>
             </div>
           </div>

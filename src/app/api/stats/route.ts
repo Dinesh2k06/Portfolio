@@ -1,6 +1,6 @@
 
 export const dynamic = 'force-dynamic';
-
+export const revalidate = 0;
 interface GithubRepoResponseItem {
   fork: boolean;
   name: string;
@@ -43,7 +43,7 @@ export async function GET() {
   try {
     const ghProfileRes = await fetch('https://api.github.com/users/Dinesh2k06', {
       headers: headers,
-      next: { revalidate: 3600 }, // Cache for 1 hour
+      next: { revalidate: 300 }, // Cache for 5 minutes
     });
     if (ghProfileRes.ok) {
       const ghProfileData = await ghProfileRes.json();
@@ -57,6 +57,8 @@ export async function GET() {
         following: ghProfileData.following,
         reposUrl: ghProfileData.repos_url,
       };
+    } else {
+      console.warn(`GitHub profile API returned status ${ghProfileRes.status}`);
     }
   } catch (err) {
     console.error('Failed to fetch live GitHub Profile:', err);
@@ -66,7 +68,7 @@ export async function GET() {
   try {
     const ghReposRes = await fetch('https://api.github.com/users/Dinesh2k06/repos?sort=updated&per_page=15', {
       headers: headers,
-      next: { revalidate: 3600 }, // Cache for 1 hour
+      next: { revalidate: 300 }, // Cache for 5 minutes
     });
     if (ghReposRes.ok) {
       const ghReposData = await ghReposRes.json();
@@ -81,12 +83,15 @@ export async function GET() {
           forks: r.forks_count,
           htmlUrl: r.html_url,
         }));
+    } else {
+      console.warn(`GitHub repos API returned status ${ghReposRes.status}`);
     }
   } catch (err) {
     console.error('Failed to fetch live GitHub Repos:', err);
   }
 
   // 3. Fetch LeetCode Stats from the official GraphQL Endpoint
+  let leetcodeError: string | null = null;
   try {
     const leetcodeQuery = {
       query: `
@@ -136,70 +141,96 @@ export async function GET() {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
       },
       body: JSON.stringify(leetcodeQuery),
-      next: { revalidate: 3600 }, // Cache for 1 hour
+      next: { revalidate: 300 }, // Cache LeetCode GraphQL fetch for 5 minutes
     });
 
-    if (lcRes.ok) {
-      const lcData = await lcRes.json();
-      const user = lcData?.data?.matchedUser;
-      
-      if (user) {
-        const solved = user.submitStats.acSubmissionNum as LeetcodeAcSubmission[];
-        const totalSub = user.submitStats.totalSubmissionNum as LeetcodeTotalSubmission[];
+    const rawText = await lcRes.text();
+    console.log('Raw LeetCode GraphQL Response for Dinesh__2006 Status:', lcRes.status);
+    console.log('Raw LeetCode GraphQL Response Payload:', rawText);
 
-        // Find difficulty counts
-        const allSolved = solved.find((s) => s.difficulty === 'All')?.count || 142;
-        const easySolved = solved.find((s) => s.difficulty === 'Easy')?.count || 76;
-        const mediumSolved = solved.find((s) => s.difficulty === 'Medium')?.count || 58;
-        const hardSolved = solved.find((s) => s.difficulty === 'Hard')?.count || 8;
-
-        // Calculate acceptance rate
-        const totalAcceptedSub = solved.find((s) => s.difficulty === 'All')?.submissions || 1;
-        const totalSubmitted = totalSub.find((s) => s.difficulty === 'All')?.submissions || 1;
-        const acceptanceRate = Number(((totalAcceptedSub / totalSubmitted) * 100).toFixed(1)) || 64.5;
-
-        leetcode = {
-          totalSolved: allSolved,
-          easySolved: easySolved,
-          mediumSolved: mediumSolved,
-          hardSolved: hardSolved,
-          totalQuestions: 3300,
-          easyQuestions: 820,
-          mediumQuestions: 1720,
-          hardQuestions: 760,
-          acceptanceRate: acceptanceRate,
-          ranking: user.profile?.ranking || 312000,
-        };
-      }
+    if (!lcRes.ok) {
+      throw new Error(`LeetCode GraphQL HTTP error: ${lcRes.status} - ${rawText}`);
     }
+
+    let lcData;
+    try {
+      lcData = JSON.parse(rawText);
+    } catch {
+      throw new Error('Failed to parse LeetCode GraphQL response as JSON.');
+    }
+
+    if (lcData.errors) {
+      throw new Error(`LeetCode GraphQL returned query errors: ${JSON.stringify(lcData.errors)}`);
+    }
+
+    const user = lcData?.data?.matchedUser;
+    if (!user) {
+      throw new Error(`LeetCode GraphQL did not return matchedUser data.`);
+    }
+
+    const solved = user.submitStats.acSubmissionNum as LeetcodeAcSubmission[];
+    const totalSub = user.submitStats.totalSubmissionNum as LeetcodeTotalSubmission[];
+
+    // Find difficulty counts
+    const allSolved = solved.find((s) => s.difficulty === 'All')?.count || 0;
+    const easySolved = solved.find((s) => s.difficulty === 'Easy')?.count || 0;
+    const mediumSolved = solved.find((s) => s.difficulty === 'Medium')?.count || 0;
+    const hardSolved = solved.find((s) => s.difficulty === 'Hard')?.count || 0;
+
+    // Calculate acceptance rate
+    const totalAcceptedSub = solved.find((s) => s.difficulty === 'All')?.submissions || 1;
+    const totalSubmitted = totalSub.find((s) => s.difficulty === 'All')?.submissions || 1;
+    const acceptanceRate = Number(((totalAcceptedSub / totalSubmitted) * 100).toFixed(1)) || 0;
+
+    leetcode = {
+      totalSolved: allSolved,
+      easySolved: easySolved,
+      mediumSolved: mediumSolved,
+      hardSolved: hardSolved,
+      totalQuestions: 3300,
+      easyQuestions: 820,
+      mediumQuestions: 1720,
+      hardQuestions: 760,
+      acceptanceRate: acceptanceRate,
+      ranking: user.profile?.ranking || 0,
+    };
   } catch (err) {
-    console.error('Failed to fetch live LeetCode stats via GraphQL, trying Heroku backup:', err);
+    const errorMsg = err instanceof Error ? err.message : String(err);
+    console.error('Failed to fetch live LeetCode stats via GraphQL, trying Heroku backup:', errorMsg);
+    
     try {
       const lcRes = await fetch('https://leetcode-stats-api.herokuapp.com/Dinesh__2006/', {
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
         },
-        next: { revalidate: 3600 },
+        next: { revalidate: 300 }, // Cache backup for 5 minutes
       });
-      if (lcRes.ok) {
-        const lcData = await lcRes.json();
-        if (lcData.status === 'success') {
-          leetcode = {
-            totalSolved: lcData.totalSolved,
-            easySolved: lcData.easySolved,
-            mediumSolved: lcData.mediumSolved,
-            hardSolved: lcData.hardSolved,
-            totalQuestions: lcData.totalQuestions || 3300,
-            easyQuestions: lcData.totalQuestions || 820,
-            mediumQuestions: lcData.totalQuestions || 1720,
-            hardQuestions: lcData.totalQuestions || 760,
-            acceptanceRate: lcData.acceptanceRate,
-            ranking: lcData.ranking,
-          };
-        }
+      if (!lcRes.ok) {
+        throw new Error(`Heroku LeetCode API HTTP error: ${lcRes.status}`);
       }
+      const lcData = await lcRes.json();
+      console.log('Raw LeetCode Heroku Response for Dinesh__2006:', JSON.stringify(lcData));
+
+      if (lcData.status !== 'success') {
+        throw new Error(`Heroku LeetCode API returned status: ${lcData.status} - ${lcData.message || ''}`);
+      }
+
+      leetcode = {
+        totalSolved: lcData.totalSolved,
+        easySolved: lcData.easySolved,
+        mediumSolved: lcData.mediumSolved,
+        hardSolved: lcData.hardSolved,
+        totalQuestions: lcData.totalQuestions || 3300,
+        easyQuestions: lcData.easyQuestions || 820,
+        mediumQuestions: lcData.mediumQuestions || 1720,
+        hardQuestions: lcData.hardQuestions || 760,
+        acceptanceRate: lcData.acceptanceRate,
+        ranking: lcData.ranking,
+      };
     } catch (backupErr) {
-      console.error('Failed to fetch LeetCode stats via Heroku backup:', backupErr);
+      const backupErrorMsg = backupErr instanceof Error ? backupErr.message : String(backupErr);
+      console.error('Failed to fetch LeetCode stats via Heroku backup:', backupErrorMsg);
+      leetcodeError = `GraphQL Error: ${errorMsg} | Backup Error: ${backupErrorMsg}`;
     }
   }
 
@@ -207,5 +238,6 @@ export async function GET() {
     githubProfile,
     githubRepos,
     leetcode,
+    leetcodeError,
   });
 }
