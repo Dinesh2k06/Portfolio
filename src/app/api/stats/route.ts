@@ -27,6 +27,7 @@ interface LeetcodeTotalSubmission {
 export async function GET() {
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
   };
 
   // If a GITHUB_TOKEN environment variable is present, use it to bypass public rate limits
@@ -172,7 +173,34 @@ export async function GET() {
       }
     }
   } catch (err) {
-    console.error('Failed to fetch live LeetCode stats:', err);
+    console.error('Failed to fetch live LeetCode stats via GraphQL, trying Heroku backup:', err);
+    try {
+      const lcRes = await fetch('https://leetcode-stats-api.herokuapp.com/Dinesh__2006/', {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
+        },
+        next: { revalidate: 3600 },
+      });
+      if (lcRes.ok) {
+        const lcData = await lcRes.json();
+        if (lcData.status === 'success') {
+          leetcode = {
+            totalSolved: lcData.totalSolved,
+            easySolved: lcData.easySolved,
+            mediumSolved: lcData.mediumSolved,
+            hardSolved: lcData.hardSolved,
+            totalQuestions: lcData.totalQuestions || 3300,
+            easyQuestions: lcData.totalQuestions || 820,
+            mediumQuestions: lcData.totalQuestions || 1720,
+            hardQuestions: lcData.totalQuestions || 760,
+            acceptanceRate: lcData.acceptanceRate,
+            ranking: lcData.ranking,
+          };
+        }
+      }
+    } catch (backupErr) {
+      console.error('Failed to fetch LeetCode stats via Heroku backup:', backupErr);
+    }
   }
 
   return Response.json({

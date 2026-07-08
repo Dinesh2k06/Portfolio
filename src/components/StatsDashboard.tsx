@@ -136,7 +136,38 @@ export default function StatsDashboard() {
       // Use dynamic stats if available, otherwise fallback to local high-fidelity constants
       const profile = data.githubProfile || FALLBACK_GITHUB_PROFILE;
       const repos = (data.githubRepos && data.githubRepos.length > 0) ? data.githubRepos : FALLBACK_GITHUB_REPOS;
-      const leetcodeStats = data.leetcode || FALLBACK_LEETCODE;
+      
+      let leetcodeStats = data.leetcode;
+
+      // Client-side fallback if server-side LeetCode fetching was blocked by Cloudflare on Vercel
+      if (!leetcodeStats) {
+        try {
+          const lcRes = await fetch('https://leetcode-stats-api.herokuapp.com/Dinesh__2006/');
+          if (lcRes.ok) {
+            const lcData = await lcRes.json();
+            if (lcData.status === 'success') {
+              leetcodeStats = {
+                totalSolved: lcData.totalSolved,
+                easySolved: lcData.easySolved,
+                mediumSolved: lcData.mediumSolved,
+                hardSolved: lcData.hardSolved,
+                totalQuestions: lcData.totalQuestions || 3300,
+                easyQuestions: lcData.totalQuestions || 820,
+                mediumQuestions: lcData.totalQuestions || 1720,
+                hardQuestions: lcData.totalQuestions || 760,
+                acceptanceRate: lcData.acceptanceRate,
+                ranking: lcData.ranking,
+              };
+            }
+          }
+        } catch (clientLcErr) {
+          console.warn('Client-side fallback LeetCode fetch failed:', clientLcErr);
+        }
+      }
+
+      if (!leetcodeStats) {
+        leetcodeStats = FALLBACK_LEETCODE;
+      }
 
       // Save to cache
       localStorage.setItem('github_profile', JSON.stringify(profile));
@@ -147,7 +178,7 @@ export default function StatsDashboard() {
       setGithubProfile(profile);
       setGithubRepos(repos);
       setLeetcode(leetcodeStats);
-      setIsDemoMode(!data.githubProfile || !data.leetcode);
+      setIsDemoMode(!data.githubProfile || leetcodeStats === FALLBACK_LEETCODE);
     } catch (error) {
       console.warn('Network stats fetch failed. Loading high-fidelity static fallbacks.', error);
       setIsDemoMode(true);
